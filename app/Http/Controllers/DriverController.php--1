@@ -1,0 +1,139 @@
+<?php
+
+namespace App\Http\Controllers;
+  
+use App\Http\Controllers\Controller;
+use App\Models\cab_ride_info;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Session;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Hash;
+use Stripe;
+  
+class DriverController extends Controller {
+	
+	public function post_a_ride(){
+		if(!Auth::check()) 
+		{
+			return view('404');
+		}
+		return view('driver.post_ride');
+	}
+	
+	public function dashboard_driver(){
+		echo"ds";
+		die;
+	}
+	
+	public function search_ride(Request $request){
+		$search_ride = $request->post();
+		$source = $search_ride['source'];
+		$destination = $search_ride['destination'];
+		$date = $search_ride['date'];
+		$no_of_passenger = $search_ride['no_of_passenger'];
+		//echo $date;
+		$get_ride_info = DB::table('cab_ride_infos')->where('pickup_location', $source)
+		->where('drop_location', $destination)
+		//->where('journey_date', $date)
+		->take(5)
+		->get();
+		/* echo"<pre>";
+		print_r($search_ride);
+		print_r($get_ride_info);
+		die; */
+		return view('driver.ride_list', ['ride_list'=>$get_ride_info]);
+		
+		
+	}
+	
+	public function book_ride($id){
+		$cab_ride_info = cab_ride_info::find($id);
+		$booking_ride=array();
+		
+		if(isset($cab_ride_info->id)){
+			
+			$id = $cab_ride_info->id;
+			$journey_type = $cab_ride_info->journey_type;
+			$price = (float)$cab_ride_info->price;
+			$pickup_location = $cab_ride_info->pickup_location;
+			$drop_location = $cab_ride_info->drop_location;
+			$journey_date = $cab_ride_info->journey_date;
+			$pickup_time = $cab_ride_info->pickup_time;
+			$drop_time = $cab_ride_info->drop_time;
+			$luggage = $cab_ride_info->luggage;
+			$car_make = $cab_ride_info->car_make;
+			$registration_number = $cab_ride_info->registration_number;
+			$car_type = $cab_ride_info->car_type;
+			$car_seat = $cab_ride_info->car_seat;
+			
+			$p_time = date("h:i A", $pickup_time);
+			
+			$d_time = date("h:i A", $drop_time);
+			
+			
+			$booking_ride = array("id"=>$id,"journey_type"=>$journey_type,"price"=>$price,"pickup_location"=>$pickup_location,"drop_location"=>$drop_location,"journey_date"=>$journey_date,"pickup_time"=>$p_time,"drop_time"=>$d_time,"luggage"=>$luggage,"car_make"=>$car_make,"registration_number"=>$registration_number,"car_type"=>$car_type,"car_seat"=>$car_seat);
+			
+		} 
+
+		//echo"<pre>";print_r($cab_ride_info);die;
+		if(!empty($booking_ride)){
+			return view('driver.ride_view',["ride_information"=>$booking_ride]);
+		} else{
+			
+			return view('404');
+		}
+		
+	}
+	public function ride_payment_process(Request $request){
+		$post_data = $request->post();
+		echo"<pre>";
+		print_r($post_data);
+		die;
+	}
+	public function book_ride_form(Request $request){
+		
+		$post_data = $request->post();
+		return view('driver.book_ride_form',["ride_data"=>$post_data]);
+		/* echo"<pre>";
+		print_R($post_data);
+		die; */
+	}
+	public function insert_data(Request $request){
+		$post_data = $request->post();
+		echo"<pre>";
+		print_r($post_data);
+		//echo $post_data['pickup_time'];
+		//die;
+		$cab_ride_info = new cab_ride_info();
+		$cab_ride_info->journey_type = $post_data['journey_type'];
+		$cab_ride_info->journey_date = $post_data['journey_date'];
+		$cab_ride_info->price = $post_data['price'];
+		
+		$cab_ride_info->pickup_location = $post_data['pickup_location']; 
+		$cab_ride_info->drop_location = $post_data['drop_location'];
+		
+		$cab_ride_info->pickup_time = date("h:i A", strtotime($post_data['pickup_time']));
+		
+		$cab_ride_info->drop_time = date("h:i A", strtotime($post_data['drop_time']));
+		$difference = round(abs(strtotime($post_data['drop_time']) - strtotime($post_data['pickup_time'])) / 3600,2);
+		$cab_ride_info->time_difference =  $difference;
+		
+		$cab_ride_info->luggage = $post_data['luggage'];
+		$cab_ride_info->car_make = $post_data['car_make'];
+		$cab_ride_info->registration_number = $post_data['registration_number'];
+		$cab_ride_info->car_type = $post_data['car_type'];
+		
+		$sear_data = implode(",",$post_data['car_seat']);
+		$cab_ride_info->car_seat = $sear_data;
+		
+		/* echo"<pre>";
+		print_r($post_data);
+		die; */
+		
+		$cab_ride_info->save();
+		return back()->with("success","Your data inserted successfully");
+	}
+	
+}

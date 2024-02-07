@@ -1,0 +1,31 @@
+.custom_css{
+	display:flex;
+}
+.checkout_btn_n{
+	top: 22px;
+    position: relative;
+}
+#event_tic{
+	text-align:center;
+}
+.order_details{
+	margin-top:20px;
+	margin-bottom:20px;
+}
+.posted_events_list .justify-between{
+	margin-top: 20px;
+    text-align: center;
+}
+.posted_events_list nav a{
+	background:#000 !important;
+	color:#fff !important;
+	border: 1px solid #000;
+}
+.posted_events_list nav span{
+	background:#000 !important;
+	color:#fff !important;
+	border: 1px solid #000;
+}
+.posted_event_n .off-canvas-wrapper{
+	display:none;
+}

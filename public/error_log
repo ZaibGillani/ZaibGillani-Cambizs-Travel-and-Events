@@ -1,0 +1,5 @@
+[26-Jul-2022 18:14:20 UTC] PHP Fatal error:  Cannot use isset() on the result of an expression (you can use "null !== expression" instead) in /home/li910edqd900/public_html/laravel/app/Http/Controllers/AuthController.php on line 132
+[26-Jul-2022 18:15:42 UTC] PHP Fatal error:  Cannot use isset() on the result of an expression (you can use "null !== expression" instead) in /home/li910edqd900/public_html/laravel/app/Http/Controllers/AuthController.php on line 132
+[22-Dec-2022 03:50:18 UTC] PHP Fatal error:  Cannot use App\Models\OrderRide as OrderRide because the name is already in use in /home/li910edqd900/public_html/laravel/app/Http/Controllers/DriverController.php on line 14
+[30-Dec-2022 04:35:20 UTC] PHP Fatal error:  Cannot redeclare App\Http\Controllers\EventController::event_postpond() in /home/li910edqd900/public_html/laravel/app/Http/Controllers/EventController.php on line 192
+[14-Jan-2023 08:13:01 UTC] PHP Fatal error:  Cannot use Stripe as Stripe because the name is already in use in /home/li910edqd900/public_html/laravel/app/Http/Controllers/AuthController.php on line 20

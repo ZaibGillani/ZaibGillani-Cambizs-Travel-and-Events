@@ -1,0 +1,68 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+class RoleMiddleware
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle(Request $request, Closure $next)
+    {
+		$user = Auth::user();
+		$id = Auth::id();
+		$get_role = '';
+		if($id!=''){
+			$user_data = DB::table('users')->where('id', $id)->first();
+			if($user_data->role){
+				$get_role = $user_data->role;
+			} else{
+				$get_role = '';
+			}
+			$get_artist_events = DB::table('users')->join('events_table', 'users.id', '=', 'events_table.user_id')->select('events_table.user_id', DB::raw('count(*) as total,users.name,users.email'))->where("users.role","=","role_event")->groupBy('events_table.user_id')->get();
+			$total_price = DB::table('order')->sum('ticket_total_price');
+				//die;
+
+			$fin_ary=array();
+			foreach($get_artist_events as $tot){
+				$uid = $tot->user_id;
+				
+				//echo $uid;
+				$get_total_price = DB::table('order')->where("uid","=",$uid)->sum('ticket_total_price');
+				$fin_ary[$tot->user_id] = array("name"=>$tot->user_id,"email"=>$tot->email,"total"=>$tot->total,"ticket_total_price"=>$get_total_price);
+				
+			}
+		
+			$get_artist = DB::table('users')->where('role', 'role_event')->get();
+			$events_sold = DB::table('events_table')->join('order','events_table.id','=','order.event_id')->select(DB::raw('sum(order.ticket_total_price) as total,events_table.event_title,events_table.about_event,events_table.event_time,events_table.ticket_details,events_table.event_image'))->groupBy('events_table.id')->get();
+			$get_events = DB::table('events_table')->get();
+			
+			$total_events = $get_events->count();
+			//$total_artist = $get_artist->count();
+			$total_artist = DB::table('users')->join('events_table', 'users.id', '=', 'events_table.user_id')->select('events_table.user_id', DB::raw('count(*) as total,users.name,users.email'))->where("users.role","=","role_event")->groupBy('users.id')->get();
+
+		}
+		
+		//$get_role = $user_data->role;
+	
+		
+		/***get all users role event****/
+		if($get_role=="role_admin"){
+			return response()->view('admin/dashboard_admin', ["user_id"=>$id,"total_artist"=>$total_artist,"total_events"=>$total_events,"event_users"=>$fin_ary,"events_list"=>$get_events,"total_price"=>$total_price,"events_sold"=>$events_sold]);
+		} elseif($get_role=="role_driver"){
+			
+			return response()->view('driver/dashboard_driver');
+		} else{
+			return response()->view('404');
+		}
+		//return route('login');
+    }
+}

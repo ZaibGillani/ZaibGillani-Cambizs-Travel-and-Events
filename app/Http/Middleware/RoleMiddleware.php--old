@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+class RoleMiddleware
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle(Request $request, Closure $next)
+    {
+		$user = Auth::user();
+		$id = Auth::id();
+		
+		$user_data = DB::table('users')->where('id', $id)->first();
+		$get_role = $user_data->role;
+		$get_artist_events = DB::table('users')->join('events_table', 'users.id', '=', 'events_table.user_id')->select('events_table.user_id', DB::raw('count(*) as total,users.name,users.email'))->where("users.role","=","role_event")->groupBy('events_table.user_id')->get();
+		$get_artist = DB::table('users')->where('role', 'role_event')->get();
+		$get_events = DB::table('events_table')->get();
+		$total_events = $get_events->count();
+		$total_artist = $get_artist->count();
+		
+		/***get all users role event****/
+		if($get_role=="role_admin"){
+			return response()->view('admin/dashboard_admin', ["user_id"=>$id,"total_artist"=>$total_artist,"total_events"=>$total_events,"event_users"=>$get_artist_events,"events_list"=>$get_events]);
+		} elseif($get_role=="role_driver"){
+			return response()->view('driver/post_ride');
+		} else{
+			echo"You are not allowed to access this page";
+		}
+		//return route('login');
+    }
+}
