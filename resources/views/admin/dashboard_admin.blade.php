@@ -1,4 +1,4 @@
-Admin User@extends('layout')
+@extends('layout')
 
 	@section('content')
 	@include('event_user.include.head')

@@ -8,7 +8,7 @@
 		<!--wrapper-->
 		<div class="wrapper">
 		 <!--sidebar wrapper -->
-			@include('event_user.include.sidebar')
+			@include('main_dashboard_sidebar')
 		 <!--end sidebar wrapper -->
 		 <!--start header -->
 			@include('event_user.include.header')
@@ -21,89 +21,48 @@
             <div class="page-content">
                <div class="d-flex align-items-center mb-4 pb-2">
                   <div>
-                     <h3 class="mb-0"> <i class='bx bxs-dashboard text-orange'></i> Dashboard</h3>
+                     <h3 class="mb-0"> <i class='bx bxs-dashboard text-orange'></i> Main Dashboard</h3>
                   </div>
                </div>
-               <div class="dashboard-info-block">
-                  <ul class="nav nav-tabs step-tab mb-5" id="myTab" role="tablist">
-                     <li class="nav-item" role="presentation">
-						
-                        <button class="nav-link active " id="stepone-tab" data-bs-toggle="tab" data-bs-target="#stepone" type="button" role="tab" aria-controls="steptwo" aria-selected="false"><img src="{{ url('/img/icons/icon01.png') }}" alt="#"><span> <span class="total-artists-count"></span><span class="label-text">Artist information</span></span></button>
-                     </li>
-                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="steptwo-tab" data-bs-toggle="tab" data-bs-target="#steptwo" type="button" role="tab" aria-controls="steptwo" aria-selected="false"><img src="{{ url('/img/icons/icon02.png') }}" alt="#"><span> <span class="total-artists-count">{{$total_events}}</span><span class="label-text">Toal Events</span></span></button>
-                     </li>
-                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="stepthree-tab" data-bs-toggle="tab" data-bs-target="#stepthree" type="button" role="tab" aria-controls="stepthree" aria-selected="false"><img src="{{ url('/img/icons/icon03.png') }}" alt="#"><span> 
-						<span class="total-artists-count">
-							@if(isset($total_sold_events->ticket_total_price))
-								@money($total_sold_events->ticket_total_price)
-							@else
-								@money(0)
-							@endif
+               <div class="dashboard-info-block dashboard-info-main">
+                  <ul class="nav nav-tabs step-tab mb-5 d-flex" id="myTab" role="tablist">
+                     <li class="nav-item w-25" role="presentation">
+                        <a href="{{ route('dashboard.events') }}" class="nav-link bg-warning" id="stepone-tab" type="button"> 
+							<img src="{{ url('/img/icons/icon01.png') }}" alt="#">
+							<span> 
+								<span class="total-artists-count fw-bold fs-4">Events Organizer</span>
 							
-						</span><span class="label-text">Toal Sold</span></span></button>
+							</span>
+						</a>
+                     </li>
+                     <li class="nav-item w-25" role="presentation">
+                        <a href="{{ route('dashboard.driver') }}" class="nav-link bg-warning" id="steptwo-tab" type="button" role="tab">
+							<img src="{{ url('/img/icons/icon02.png') }}" alt="#">
+							<span> 
+								<span class="total-artists-count fw-bold fs-4" >Driver Dashboard</span>
+					
+							</span>
+						</a>
+                     </li>
+                    
+                     <li class="nav-item w-25" role="presentation">
+						<a href="{{ route('dashboard.buyer') }}" class="nav-link bg-warning" id="stepone-tab" type="button"> 
+							<img src="{{ url('/img/icons/icon03.png') }}" alt="#">
+							<span>
+								<span class="total-artists-count fw-bold fs-4"> Buyer Dashboard</span>
+								
+							</span>
+						</a>
                      </li>
                   </ul>
                </div>
                <div class="card radius-10 bg-light-primary">
                   <div class="card-body">
                      <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="stepone" role="tabpanel" aria-labelledby="stepone-tab">
-                           <h3 class="mb-4">Artist Information</h3>
-                           <div class="table-responsive">
-							@if(!$event_users->isEmpty())
-                              <table class="table align-middle mb-0 table-striped-custom">
-                                 <thead>
-                                    <tr>
-                                       <th>Name</th>
-                                       <th>Email</th>
-                                       <th>Total Events</th>
-                                       <th>Total Earned</th>
-                                    </tr>
-                                 </thead>
-                                 <tbody>
-									<?php //echo "<pre>"; print_r($event_users); die; ?>
-									@foreach($event_users as $event)
-										<tr>
-										   <td>
-											  <div class="d-flex align-items-center">
-												 
-												 <div class="ms-2">
-													<h6 class="mb-0">{{$event->name}}</h6>
-												 </div>
-											  </div>
-										   </td>
-										   <td>
-											  <div class="d-flex align-items-center">
-												 
-												 <div class="ms-2">
-													<h6 class="mb-0">{{$event->email}}</h6>
-												 </div>
-											  </div>
-										   </td>
-										   <td><a target='_blank' href="{{url('/posted_event')}}?artist_id={{$event->user_id}}">{{$event->total}}</td>
-										  
-											@if(isset($user_order_pricing[$event->user_id]))
-												<td>@money($user_order_pricing[$event->user_id])</td>
-											@else
-												<td>@money(0)</td>
-											@endif
-										   
-										   <td></td>
-										</tr>
-									@endforeach
-                                 </tbody>
-                              </table>
-							  @else
-								No information found  
-							  @endif
-                           </div>
-                        </div>
+                        
                         <div class="tab-pane fade" id="steptwo" role="tabpanel" aria-labelledby="steptwo-tab">
                            <h3 class="mb-4">Total Events</h3>
                            <div class="table-responsive">
-							@if(!$events_list->isEmpty())
                               <table class="table align-middle mb-0 table-striped-custom">
                                  <thead>
                                     <tr>
@@ -139,7 +98,7 @@
 											
 											@foreach (json_decode($event_l->ticket_details) as $tickey => $ticinfo)
 												@if($tickey==0)
-													<td>@money($ticinfo->price)</td> 
+													<td>{{ $ticinfo->price }}</td> 
 												@endif
 												 
 											@endforeach
@@ -149,15 +108,11 @@
 								 
                                  </tbody>
                               </table>
-							  @else
-								No, Information found  
-							  @endif
                            </div>
                         </div>
                         <div class="tab-pane fade" id="stepthree" role="tabpanel" aria-labelledby="stepthree-tab">
                            <h3 class="mb-4">Total Sold</h3>
                            <div class="table-responsive">
-							@if(!$sold_events->isEmpty())
                               <table class="table align-middle mb-0 table-striped-custom">
                                  <thead>
                                     <tr>
@@ -180,9 +135,6 @@
 									@endforeach
                                  </tbody>
                               </table>
-							  @else
-								Sorry, No information found  
-							  @endif
                            </div>
                         </div>
                      </div>

@@ -213,12 +213,14 @@ class AuthController extends Controller
 	 * @return response()
 	 */
 	public function resetPassword(Request $request){
+
+		
 		$request->validate([
 			'token' => 'required',
 			'email' => 'required|email',
 			'password' => 'required|confirmed',
 		]);
-	 
+
 		$status = Password::reset(
 			$request->only('email', 'password', 'password_confirmation', 'token'),
 			function ($user, $password) {
@@ -235,8 +237,6 @@ class AuthController extends Controller
 		// return redirect to route with #login in the url
 
 		$url = route('event_list').'#login';
-
-		// dd($status, $url);
 
 		return $status === Password::PASSWORD_RESET
                 ? redirect()->to($url)->with('status', __($status))
@@ -333,6 +333,23 @@ class AuthController extends Controller
   
         return redirect("login")->withSuccess('Opps! You do not have access');
     }
+
+	/**
+	 * User Dashboard
+	 * @param Request $request
+	 * @return view()
+	 */
+	public function user_dashboard(Request $request)
+	{
+		$event_users = array();
+		$events_list = array();
+		$sold_events = array();
+		return view('dashboard', [
+			'event_users' => $event_users, 
+			'events_list' => $events_list, 
+			'sold_events' => $sold_events]);
+	}
+
     
     /**
      * Write code on Method
@@ -366,10 +383,10 @@ class AuthController extends Controller
 			$to_name = $data['name'];
 			$to_email =  $data['email'];
 			$data = array('details'=>['name'=>$to_name]);
-		//	Mail::send('emails.Registration', $data, function($message) use ($to_name, $to_email) {
-		//		$message->to($to_email, $to_name)->subject('Laravel Test Mail');
-		//		$message->from('kushalk26@gmail.com','New User Registration');
-		//	});
+			Mail::send('emails.Registration', $data, function($message) use ($to_name, $to_email) {
+				$message->to($to_email, $to_name)->subject('Laravel Test Mail');
+				$message->from('kushalk26@gmail.com','New User Registration');
+			});
 
 			event(new Registered($user));
 			// Login the user

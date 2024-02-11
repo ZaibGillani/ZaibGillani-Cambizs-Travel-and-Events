@@ -18,7 +18,7 @@
             <div class="top-navigation mb-4">
                <div class="container">
                   <div class="row  justify-content-center">
-                     <div class="col-6 col-md-4 d-none d-xl-block">
+                     <div class="col-md-4 d-none d-xl-block">
                         <ul class="d-flex m-0">
                            <li><a href="#">What is Cambizs?</a></li>
                            <li><a href="#">Our Blog</a></li>
@@ -26,7 +26,7 @@
                         </ul>
                      </div>
                      <div class="col-md-3 d-none text-center pt-2 d-none d-xl-block">Your Global One-Stop Shop</div>
-                     <div class="col-6 col-md-3 d-none d-xl-block">
+                     <div class="col-md-1 d-none d-xl-block">
                         <ul class="d-flex m-0 black-link">
                            <li><a href="#"></a></li>
                            <li><a href="#"></a></li>
@@ -35,14 +35,14 @@
                            <li><a href="#"></a></li>
                         </ul>
                      </div>
-                     <div class="col-6 col-md-2">
+                     <div class="col-md-4">
                         <ul class="user-intraction m-0 dfgdgf">
                            
 						  
 							@if (Auth::check())
 								<li>{{Auth::user()->name}}</li>
                         @if (Auth::check())
-								<li class="user_dashboard"><a href="{{ url('/dashboard/') }}">Dashboard</a></li>
+                        <li class="user_dashboard"><a href="{{ route('dashboard.main') }}">Dashboard</a></li>
 								@endif
 								
 								<li><a href="{{ url('/logout') }}">Logout</a></li>

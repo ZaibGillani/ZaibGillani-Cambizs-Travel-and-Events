@@ -2563,12 +2563,19 @@ ol {
 	}
 }
 
+
+@media only screen and (max-width: 420px) {
+	.parent-tab .nav-item .nav-link {
+		width: 110px !important;
+	}
+}
+
 @media only screen and (max-width: 767px) {
 	.first-section {
 		margin-top: -55px;
 	}
 	.parent-tab .nav-item .nav-link {
-		width: 150px;
+		width: 130px;
 	}
 	.child-tab .nav-item .nav-link.active,
 	.child-tab .nav-item .show>.nav-link {

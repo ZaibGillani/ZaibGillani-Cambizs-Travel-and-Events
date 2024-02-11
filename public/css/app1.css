@@ -331,7 +331,10 @@ border-radius:4px
 	transition: all .2s
 }
 
+
+
 @media (min-width:992px) {
+
 	.product-grid .card:hover {
 		margin-top: -.25rem;
 		margin-bottom: .25rem;
@@ -2679,6 +2682,9 @@ label {
 }
 .dashboard-info-block .step-tab .nav-item {
     flex: 0 30%;
+}
+.dashboard-info-main .step-tab .nav-item {
+	flex: 0 25%;
 }
 .dashboard-info-block .step-tab .nav-link.active,.dashboard-info-block .step-tab .nav-link:hover {
 	background: #fec225;

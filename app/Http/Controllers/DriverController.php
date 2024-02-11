@@ -314,7 +314,7 @@ class DriverController extends Controller {
 		$driver_profile_s->driver_document = $name;
 		$driver_profile_s->save();
 		echo"sdsd";
-		return redirect("dashboard")->withSuccess('Great! You have Successfully loggedin'); 
+		return redirect("driver/dashboard")->withSuccess('Great! You have Successfully loggedin'); 
 	}
 	
 	public function dashboard_driver_profile(Request $request){

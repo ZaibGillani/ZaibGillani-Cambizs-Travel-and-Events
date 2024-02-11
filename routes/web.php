@@ -8,6 +8,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\VerificationController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,8 +30,15 @@ Route::get('login', [AuthController::class, 'index'])->name('login')->middleware
 Route::post('post-login', [AuthController::class, 'postLogin'])->name('login.post'); 
 
 Route::get('registration', [AuthController::class, 'registration'])->name('register');
-Route::post('post-registration', [AuthController::class, 'postRegistration'])->name('register.post'); 
-Route::get('dashboard', [AuthController::class, 'dashboard'])->middleware('Role')->name('dashboard'); 
+Route::post('post-registration', [AuthController::class, 'postRegistration'])->name('register.post');
+
+Route::get('main-dashboard', [AuthController::class, 'user_dashboard'])->middleware('auth')->name('dashboard.main');
+
+Route::get('events/dashboard', [DashboardController::class, 'events_dashboard'])->middleware('auth')->name('dashboard.events');
+Route::get('driver/dashboard', [DashboardController::class, 'driver_dashboard'])->middleware('auth')->name('dashboard.driver');
+Route::get('buyer/dashboard', [DashboardController::class, 'buyer_dashboard'])->middleware('auth')->name('dashboard.buyer');
+
+Route::get('dashboard', [AuthController::class, 'dashboard'])->middleware('Role')->name('dashboard');
 
 /***admin urls***/
 Route::get('dashboard_admin', [AuthController::class, 'dashboard_admin']); 
@@ -106,7 +114,7 @@ Route::post('book_ride_form', [DriverController::class, 'book_ride_form'])->name
 
 Route::post('ride_payment_process',[DriverController::class,"ride_payment_process"])->name('ride_payment_process');
 
-Route::get('driver/dashboard', [DriverController::class, 'dashboard_driver']);
+Route::get('driver_dashboard', [DriverController::class, 'dashboard_driver']);
 Route::post('driver_profile', [DriverController::class, 'driver_profile'])->name('driver_profile'); 
 //Route::post('driver_profile', [DriverController::class, 'driver_profile'])->name('driver_profile'); 
 Route::get('complete_driver_registration/{id}', [DriverController::class, 'complete_registration'])->name('complete_registration'); 

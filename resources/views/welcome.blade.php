@@ -55,13 +55,13 @@
                <div class="container">
                   <ul class="nav nav-pills justify-content-center parent-tab" id="pills-tab" role="tablist">
                      <li class="nav-item" role="presentation">
-                        <button class="nav-link active " id="travel" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Travel</button>
+                        <button class="nav-link active" id="travel" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Travel</button>
                      </li>
                      <li class="nav-item" role="presentation">
                         <button class="nav-link" id="events" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Events</button>
                      </li>
 					 <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="car-booking" data-bs-toggle="pill" data-bs-target="#pills-carbooking" type="button" role="tab" aria-controls="pills-carbooking" aria-selected="false">Car booking</button>
+                        <button class="nav-link text-truncate" id="car-booking" data-bs-toggle="pill" data-bs-target="#pills-carbooking" type="button" role="tab" aria-controls="pills-carbooking" aria-selected="false">Car booking</button>
                      </li>
                   </ul>
                   <div class="tab-content p-4" id="pills-tabContent">
