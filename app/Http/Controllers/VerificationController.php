@@ -34,7 +34,7 @@ class VerificationController extends Controller
         $user = $request->user();
         $user->status = 1;
         $user->save();
-        return redirect('/dashboard');
+        return redirect('/');
     }
 
 }
