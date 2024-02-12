@@ -383,10 +383,10 @@ class AuthController extends Controller
 			$to_name = $data['name'];
 			$to_email =  $data['email'];
 			$data = array('details'=>['name'=>$to_name]);
-			Mail::send('emails.Registration', $data, function($message) use ($to_name, $to_email) {
-				$message->to($to_email, $to_name)->subject('Laravel Test Mail');
-				$message->from('kushalk26@gmail.com','New User Registration');
-			});
+		//	Mail::send('emails.Registration', $data, function($message) use ($to_name, $to_email) {
+		//		$message->to($to_email, $to_name)->subject('Laravel Test Mail');
+		//		$message->from('kushalk26@gmail.com','New User Registration');
+		//	});
 
 			event(new Registered($user));
 			// Login the user
